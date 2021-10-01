@@ -1,8 +1,4 @@
-const profileDataArgs = process.argv.slice(2, process.argv.length);
-// assignment destructuring assigns elements of an array to variable names in a single expression
-const [name, github] = profileDataArgs;
-
-const generatePage = (userName, githubName) => {
+module.exports = (name, github) => {
     return `
     <!DOCTYPE html>
     <html lang="en">
@@ -20,6 +16,3 @@ const generatePage = (userName, githubName) => {
     </html>    
     `;
 };
-
-// allows the functions to be used in other javascript files
-module.exports = generatePage;

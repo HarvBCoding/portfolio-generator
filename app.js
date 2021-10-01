@@ -1,16 +1,27 @@
-// The rewuire statement is a built-in function that's globally available in node.js
-const fs = require('fs');
-// to use functions from other js files, use require('./relative-path)
-const generatePage = require('./src/page-template.js');
+const inquirer = require('inquirer');
 
-// process is a global object that represents everything going on in the app; 
-// the argv property of process is an array that holds what was typed into the command line on execution so that the data can be captured and used w/in the app
-const profileDataArgs = process.argv.slice(2, process.argv.length);
-// assignment destructuring assigns elements of an array to variable names in a single expression
-const [name, github] = profileDataArgs;
+inquirer
+    // the prompt method can receive an array of objects in it's argument known as the question object
+    // the properties of the question object identify the type, name and question message
+    .prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'What is your name?'
+        }
+    ])
+    // the answers object is returned as a promise
+    .then(answers => console.log(answers));
+// // The require statement is a built-in function that's globally available in node.js
+// const fs = require('fs');
 
-fs.writeFile('index.html', generatePage(name, github), err => {
-    if(err) throw err;
+// // to use functions from other js files, use require('./relative-path)
+// const generatePage = require('./src/page-template.js');
 
-    console.log('Portfolio complete! Check out index.html to see the output');
-})
+// const pageHTML = generatePage(name, github);
+
+// fs.writeFile('index.html', pageHTML, err => {
+//     if(err) throw err;
+
+//     console.log('Portfolio complete! Check out index.html to see the output');
+// });
