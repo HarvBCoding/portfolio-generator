@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
-// The require statement is a built-in function that's globally available in node.js
-const fs = require('fs');
+
+// b/c we exported an object from generate-site, we can use object destructuring to create variables out of those properties instead of using dot notation
+const { writeFile, copyFile } = require('./utils/generate-site.js');
 
 // to use functions from other js files, use require('./relative-path)
 // assigns the anonymous HTML template function in page-template.js to a variable
@@ -187,26 +188,24 @@ const promptProject = portfolioData => {
     });
 };
 
-const pageHTML = generatePage(mockData);
-
-fs.writeFile('./index.html', pageHTML, err => {
-    if (err) throw new Error(err);
-
-    console.log('Page created! Check out the index.html in this directory to see it!')
-});
 
 // a promise chain is a series of functions that return Promises, allowing us to attach .then() methods to one another
 // prompt the user by calling the function
-// promptUser()
-    // after all quesions are answered in promptUser, prompt the user for information about projects they would like featured
-    // .then(promptProject)
-    // then take all the user answers and pass them in an array to the page-template js to create the html page
-    // .then(portfolioData => {
-        // const pageHTML = generatePage(portfolioData);
-
-        // fs.writeFile('./index.html', pageHTML, err => {
-        //     if (err) throw new Error(err);
-
-        //     console.log('Page created! Check out the index.html in this directory to see it!');
-        // });
-    // });
+promptUser()
+  .then(promptProject)
+  .then(portfolioData => {
+    return generatePage(portfolioData);
+  })
+  .then(pageHTML => {
+    return writeFile(pageHTML);
+  })
+  .then(writeFileResponse => {
+    console.log(writeFileResponse);
+    return copyFile();
+  })
+  .then(copyFileResponse => {
+    console.log(copyFileResponse);
+  })
+  .catch(err => {
+    console.log(err);
+  });

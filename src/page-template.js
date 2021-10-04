@@ -15,6 +15,7 @@ const generateAbout = aboutText => {
         `;
 };
 
+// create the projects section
 const generateProjects = projectsArr => {
 
     // array method can be chained together;
